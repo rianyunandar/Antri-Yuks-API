@@ -1,5 +1,7 @@
 import express from 'express';
 import morgan from 'morgan';
+import antrianRouter from '../apps/router/antrian';
+import layananRouter from '../apps/router/layanan';
 
 const PORT = process.env.PORT || 3000;
 
@@ -19,6 +21,8 @@ app.get('/', async (req, res, next)=>{
     res.json({message: 'success'})
 })
 
+app.use('/fb', antrianRouter);
+app.use('/fb', layananRouter);
 app.listen (PORT, ()=>{
     console.log(`app run in port ${PORT}`)
 })

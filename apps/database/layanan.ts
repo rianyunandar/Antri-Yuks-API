@@ -6,7 +6,7 @@ export type Layanan = {
   nama_layanan: string;
   operator: string;
   jenis_layanan: string;
-  kode_layanan: number;
+  kode_layanan: string;
 };
 
 admin.initializeApp({
@@ -15,34 +15,67 @@ admin.initializeApp({
 });
 
 const db = admin.firestore();
+const layananRef = db.collection('layanans');
 
-export class FirebaseClient {
+
+export class LayananClient {
   private db: FirebaseFirestore.Firestore;
-  private accountRef = db.collection('layanans')
+  private layananRef: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData>;
 
 
 constructor() {
   this.db= db;
+  this.layananRef = layananRef;
 }
   
-async addLayanan(layanan: Layanan){
+async addlayanan(layanan: Layanan){
+  try {
+    await layananRef.add(layanan);
+  
+  } catch (error) {
+    throw error
+  }}
 
-}
 
 async getlayananAll(){
-  
+  let snapshot;
+  try {
+    snapshot = await this.layananRef.get()
+  } catch (error) {
+    throw error
+  }
 }
 
-async getlayananByKode(){
-  
+async getlayananByKode(codeservice: string){
+  let snapshot;
+  try {
+    snapshot = await layananRef.where ('kode_layanan','==', codeservice).get();
+  } catch (error) {
+    throw error
+  }
 }
 
-async deleteLayanan(){
+async deleteLayanan(id: string){
+  try {
+    await layananRef.doc(id).delete();
   
+  } catch (error) {
+    throw error
+  }
 }
 
-async UpdateLayanan(){
-  
+async UpdateLayanan(id: string, update: Object){
+  let snapshot;
+  try {
+    await layananRef.doc(id).update({
+      ...update
+    });
+    snapshot = await layananRef.doc(id).get();
+  } catch (error) {
+    throw error;
+  }
+
+  return snapshot.data();
 }
 
 
