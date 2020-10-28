@@ -8,7 +8,7 @@ const layananRouter = Router();
 //@operator
 //@jenis_layanan
 //@kode_layanan
-layananRouter.post('/service' , async (req, res, next)=>
+layananRouter.post('/add' , async (req, res, next)=>
 {
 const layanan = req.body;
 try {
@@ -25,7 +25,7 @@ try {
 
 //@route    GET /fb/account
 //@desc     Get all account data
-layananRouter.get('/service', async (req, res, next) => {
+layananRouter.get('/all', async (req, res, next) => {
     let layanan;
     try {
         layanan = await layananClient.getlayananAll();
@@ -36,7 +36,7 @@ layananRouter.get('/service', async (req, res, next) => {
     res.json(layanan);
   });
 
-  layananRouter.put('/service/:id', async (req, res, next) => {
+  layananRouter.put('/update/:id', async (req, res, next) => {
     const id =  req.params.id;
     const update = req.body
     let layanan;
@@ -49,7 +49,7 @@ layananRouter.get('/service', async (req, res, next) => {
     res.json(layanan);
   });
 
-  layananRouter.delete('/service/:id', async (req, res, next) => {
+  layananRouter.delete('/delete/:id', async (req, res, next) => {
     const id =  req.params.id;
     let layanan;
     try {

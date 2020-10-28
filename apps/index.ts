@@ -1,8 +1,8 @@
 import 'source-map-support/register'
 import express from 'express';
 import morgan from 'morgan';
-import antrianRouter from '../apps/router/antrian';
-import layananRouter from '../apps/router/layanan';
+import antrianRouter from './router/antrian';
+import layananRouter from './router/layanan';
 
 const PORT = process.env.PORT || 3000;
 

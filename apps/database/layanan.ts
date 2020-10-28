@@ -1,6 +1,4 @@
-import admin, { firestore } from 'firebase-admin';
-import { serviceAccountCredentials } from './firebasekunci';
-const serviceAccount = serviceAccountCredentials as admin.ServiceAccount;
+import admin  from './firebaseDB'
 
 export type Layanan = {
   nama_layanan: string;
@@ -9,10 +7,6 @@ export type Layanan = {
   kode_layanan: string;
 };
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: 'https://digitalent-cd239.firebaseio.com',
-});
 
 const db = admin.firestore();
 const layananRef = db.collection('layanans');
@@ -40,7 +34,8 @@ async addlayanan(layanan: Layanan){
 async getlayananAll(){
   let snapshot;
   try {
-    snapshot = await this.layananRef.get()
+    snapshot = await this.layananRef.get();
+    return snapshot;
   } catch (error) {
     throw error
   }
