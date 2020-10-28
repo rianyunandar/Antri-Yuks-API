@@ -1,4 +1,4 @@
-import admin  from './firebaseDB'
+import dbfire  from './firebaseDB'
 
 export type Layanan = {
   nama_layanan: string;
@@ -8,8 +8,8 @@ export type Layanan = {
 };
 
 
-const db = admin.firestore();
-const layananRef = db.collection('layanans');
+
+const layananRef = dbfire.collection('layanans');
 
 
 export class LayananClient {
@@ -18,7 +18,7 @@ export class LayananClient {
 
 
 constructor() {
-  this.db= db;
+  this.db= dbfire;
   this.layananRef = layananRef;
 }
   
@@ -35,10 +35,12 @@ async getlayananAll(){
   let snapshot;
   try {
     snapshot = await this.layananRef.get();
-    return snapshot;
+   
   } catch (error) {
     throw error
-  }
+  }console.log(snapshot);
+  //return snapshot.docs.map(doc => doc.data()); // data doang
+  return snapshot.docs.map(doc => {return {...doc.data(), id: doc.id} }); // data+ id
 }
 
 async getlayananByKode(codeservice: string){
@@ -48,7 +50,9 @@ async getlayananByKode(codeservice: string){
   } catch (error) {
     throw error
   }
+  return snapshot.docs.map(doc => doc.data());
 }
+//
 
 async deleteLayanan(id: string){
   try {
@@ -57,6 +61,7 @@ async deleteLayanan(id: string){
   } catch (error) {
     throw error
   }
+  return;
 }
 
 async UpdateLayanan(id: string, update: Object){

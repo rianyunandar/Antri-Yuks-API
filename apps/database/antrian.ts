@@ -1,4 +1,4 @@
-import admin  from './firebaseDB'
+import dbfire  from './firebaseDB'
 
 export type Antrian = {
   Kode_layanan: string;
@@ -8,17 +8,17 @@ export type Antrian = {
 };
 
 
-const db = admin.firestore();
-const antrianRef = db.collection('antrians');
+
+const antrianRef = dbfire.collection('antrians');
 
 
 export class AntrianClient {
   private db: FirebaseFirestore.Firestore;
-  private antrianRef = db.collection('antrians')
+  private antrianRef = dbfire.collection('antrians')
  // private layananRef = db.collection('layanans');
 
 constructor() {
-  this.db= db;
+  this.db= dbfire;
   this.antrianRef = antrianRef;
  // this.layananRef = layananRef;
 }
@@ -43,6 +43,8 @@ async getAntrianALL(){
     } catch (error) {
       throw error
     } 
+    console.log(snapshot);
+    return snapshot.docs.map(doc => doc.data());
 }
 
 

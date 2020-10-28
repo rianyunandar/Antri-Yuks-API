@@ -36,6 +36,18 @@ layananRouter.get('/all', async (req, res, next) => {
     res.json(layanan);
   });
 
+  layananRouter.get('/:id', async (req, res, next) => {
+   const id =  req.params.id;
+   let layanan;
+    try {
+        layanan = await layananClient.getlayananByKode(id);
+    } catch(error) {
+      return next(error);
+    }
+  
+    res.json(layanan);
+  });
+
   layananRouter.put('/update/:id', async (req, res, next) => {
     const id =  req.params.id;
     const update = req.body
@@ -51,7 +63,6 @@ layananRouter.get('/all', async (req, res, next) => {
 
   layananRouter.delete('/delete/:id', async (req, res, next) => {
     const id =  req.params.id;
-    let layanan;
     try {
       await layananClient.deleteLayanan(id)
     } catch (error) {

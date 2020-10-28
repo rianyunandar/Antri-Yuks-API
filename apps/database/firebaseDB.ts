@@ -8,5 +8,7 @@ admin.initializeApp({
   databaseURL: 'https://digitalent-cd239.firebaseio.com',
 });
 
-export default admin;
+const dbfire = admin.firestore();
+
+export default dbfire;
 
