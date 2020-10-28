@@ -1,12 +1,12 @@
-import admin, { firestore } from 'firebase-admin';
+import admin, { firestore, SDK_VERSION } from 'firebase-admin';
 import { serviceAccountCredentials } from './firebasekunci';
 const serviceAccount = serviceAccountCredentials as admin.ServiceAccount;
 
 export type Antrian = {
-  kode_layanan: string;
+  Kode_layanan: string;
   Nomer_antrian: number;
   Status: boolean;
-  kode_status : string;
+  Index_antrian : string;
 };
 
 admin.initializeApp({
@@ -32,9 +32,13 @@ constructor() {
   
 async addAntrian(antrian: Antrian){
     try {
-        await antrianRef.add(antrian);
-      
-      } catch (error) {
+        await antrianRef.add({
+          kode_layanan: antrian.Kode_layanan,
+          Nomer_antrian: antrian.Nomer_antrian,
+          Status: antrian.Status,
+          index_antrian : antrian.Kode_layanan + '_'+antrian.Status});
+    
+        } catch (error) {
         throw error
       }
 }
@@ -101,14 +105,35 @@ async panggilAntrian(Nomer_antrian : number){
     }
 }
 
-// async nextantrian(Nomer_antrian : number){
-//     let snapshot;
-//     try {
-//       snapshot = await antrianRef.where ('Nomer_antrian','==', Nomer_antrian).get();
-//     } catch (error) {
-//       throw error
-//     }
+// logic OR bukan and :( salah
+// async getNextAntrian(codeservice:string){
+ 
+//   const onprogress = antrianRef.where ('status','==', false).get();
+//   const service = antrianRef.where ('kode_layanan','==',codeservice ).get();
+
+//   const [
+//     onprogressSnapShot,
+//     serviceSnapShot
+//   ] = await Promise.all([onprogress, service]);
+
+//   const onprogressArray = onprogressSnapShot.docs;
+//   const serviceArray = serviceSnapShot.docs;
+
+//   //let nextantrian;  
+//   return onprogressArray.concat(serviceArray);
+
 // }
+// }
+
+
+async getbystatusservice(index_antrian : string){
+  let snapshot;
+  try {
+    snapshot = await antrianRef.where ('index_antrian','==', index_antrian).get();
+  } catch (error) {
+    throw error
+  }
+}
 
 
 }

@@ -21,8 +21,8 @@ app.get('/', async (req, res, next)=>{
     res.json({message: 'success'})
 })
 
-app.use('/fb', antrianRouter);
-app.use('/fb', layananRouter);
+app.use('/quee', antrianRouter);
+app.use('/services', layananRouter);
 app.listen (PORT, ()=>{
     console.log(`app run in port ${PORT}`)
 })

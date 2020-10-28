@@ -5,13 +5,26 @@ const antrianClient = new AntrianClient;
 const antrianRouter = Router();
 
 
-antrianRouter.post('/queee' , async (req, res, next)=>
+
+// kode_layanan: string;
+// Nomer_antrian: number;
+// Status: boolean;
+// kode_status : string;
+
+
+antrianRouter.post('/add' , async (req, res, next)=>
 {
-const antrian = req.body;
+ const antrian = req.body//({
+//   kode_layanan: req.body.kodelayanan,
+//   Nomer_antrian: req.body.nomerantrian,
+//   Status: req.body.status,
+//   indexantrian : ('req.body.status  +'_'+ req.body.nomerantrian')
+ 
+//});;
 try {
     await antrianClient.addAntrian(antrian);
 
-} catch (error) {
+} catch (error) {``
     throw error;
   }
 
@@ -21,7 +34,7 @@ try {
 });
 
 
-antrianRouter.get('/queee', async (req, res, next) => {
+antrianRouter.get('/all', async (req, res, next) => {
     let antrian;
     try {
         antrian = await antrianClient.getAntrianALL();
@@ -32,20 +45,18 @@ antrianRouter.get('/queee', async (req, res, next) => {
     res.json(antrian);
   });
 
-  antrianRouter.put('/queee/:id', async (req, res, next) => {
-    const id =  req.params.id;
-    const update = req.body
-    let antrian;
-    try {
-        antrian = await antrianClient.updateStatusAntrian(id, update)
-    } catch (error) {
-      return next(error);
-    }
-  
-    res.json(antrian);
-  });
+  // antrianRouter.put('/antriansele/:id', async (req, res, next) => {
+  //   const id =  req.params.id;
+  //   const update = req.body
+  //   let antrian;
+  //   try {
+  //       antrian = await antrianClient.updateStatusAntrian(id, update)
+  //   } catch (error) {
+  //     return next(error);
+  //   }
+  // });
 
-  antrianRouter.delete('/queee/reset', async (req, res, next) => {
+  antrianRouter.delete('/reset', async (req, res, next) => {
     try {
       await antrianClient.ResetAntrian();
     } catch (error) {
@@ -56,8 +67,39 @@ antrianRouter.get('/queee', async (req, res, next) => {
     });
   })
 
+
+  antrianRouter.get('/:id', async (req, res, next) => {
+  const id =  req.params.id;
+  let antrian;
+    try {
+        antrian = await antrianClient.getAntrianByLayanan(id);
+    } catch(error) {
+      return next(error);
+    }
+     
+  
+    res.json(antrian);
+  });;
+
+  antrianRouter.get('/:service/:status', async (req, res, next) => {
+    const id = req.params.service+'_'+req.params.status;
+    console.log(id);
+    let antrian;
+      try {
+          antrian = await antrianClient.getbystatusservice(id);
+      } catch(error) {
+        return next(error);
+      }
+       
+      res.json(antrian);
+    });;
+
+
+
+
+  
   //tambah filter by status
-//   const arr1 = data.filter(d => d.age > 37);
+//   
 // console.log('arr1', arr1);
 
 
