@@ -23,22 +23,22 @@ constructor() {
  }
   
 async addAntrian(codeservice: string){
-  console.log(codeservice )
-    try {
+  let ticket;
+  try {
       const ticketnumber = await this.getticketnumber();
-      let ticket = ticketnumber[0];
-      
-       
-       console.log(ticket)
-        await antrianRef.add({
-          kode_layanan: codeservice,
+       ticket = ticketnumber[0];
+
+      await antrianRef.add({
+          Kode_layanan: codeservice,
           Nomer_antrian:ticket,
           Status: false,
-          index_antrian : codeservice + '_'+false});
-    console.log('test code : ',codeservice )
+          Index_antrian : codeservice + '_'+false});
+         
+      
         } catch (error) {
         throw error
-      }
+      }     
+      
 }
 
 async getticketnumber()
@@ -55,6 +55,19 @@ async getticketnumber()
 }
 
 
+async PrintLastTicket()
+{
+  let ticketnumber
+   try {
+    ticketnumber = await this.antrianRef.orderBy('Nomer_antrian','desc').limit(1).get();
+    //if ticketnumber.is
+    } catch (error) {
+      throw error
+    } 
+    console.log(ticketnumber);
+    return ticketnumber.docs.map(doc => doc.data()); //max number +1
+}
+
 
 async getAntrianALL(){
     let snapshot;
@@ -64,54 +77,46 @@ async getAntrianALL(){
       throw error
     } 
     console.log(snapshot);
-    return snapshot.docs.map(doc => doc.data());
+    return snapshot.docs.map(doc => {return {...doc.data(), id: doc.id} }); // data+ id
 }
 
-
-async getAntrianByStatus(status: boolean){
-    let snapshot;
-    try {
-      snapshot = await antrianRef.where ('status','==', status).get();
-    } catch (error) {
-      throw error
-    }
-}
+// masih bug
+// async getAntrianByStatus(status: boolean){
+//     let snapshot;
+//     console.log('test ' + status);
+//     try {
+//       snapshot = await antrianRef.where ('Status','==', status).get();
+//     } catch (error) {
+//       throw error
+//     }
+//     return snapshot.docs.map(doc => {return {...doc.data(), id: doc.id} }); // data+ id
+// }
 
 async getAntrianByLayanan(codeservice:string){
     let snapshot;
     try {
-      snapshot = await antrianRef.where ('kode_layanan','==', codeservice).get();
+      snapshot = await antrianRef.where ('Kode_layanan','==', codeservice).get();
     } catch (error) {
       throw error
     }
+    return snapshot.docs.map(doc => {return {...doc.data(), id: doc.id} }); // data+ id
 }
 
-async ResetAntrian(){
-    try {
-        //await db.collection('antrians').get()
-        await antrianRef.get().then(res => {
-          res.forEach(element => {
-            element.ref.delete();
-          });
-      }  
-      )} catch (error) {
-        throw error
-      }
-      await antrianRef.add({
-        kode_layanan: 'test',
-        Nomer_antrian: 0,
-        Status: 1,
-        index_antrian : 'test_true'
+
+  // Kode_layanan: string;
+  // Nomer_antrian: number;
+  // Status: boolean;
+  // Index_antrian : string;
 
 
-})
-}
 
-async updateStatusAntrian(id: string, update: Object) {
+async updateStatusAntrian(id: string,codeservice: string) {
     let snapshot;
     try {
       await antrianRef.doc(id).update({
-        ...update
+        "Status": true,
+        "Index_antrian": codeservice+"_"+true,
+        "Kode_layanan": codeservice
       });
       snapshot = await antrianRef.doc(id).get();
     } catch (error) {
@@ -128,6 +133,46 @@ async panggilAntrian(Nomer_antrian : number){
     }
     return snapshot.docs.map(doc => {return {...doc.data(), id: doc.id} }); // data+ id
 }
+
+
+async getbystatusservice(index_antrian : string){
+  let snapshot;
+  try {
+    snapshot = await antrianRef.where ('Index_antrian','==', index_antrian).get();
+  } catch (error) {
+    throw error
+  }
+  return snapshot.docs.map(doc => {return {...doc.data(), id: doc.id} }); // data+ id
+}
+
+
+
+async ResetAntrian(){
+  try {
+      //await db.collection('antrians').get()
+      await antrianRef.get().then(res => {
+        res.forEach(element => {
+          element.ref.delete();
+        });
+    }  
+    )} catch (error) {
+      throw error
+    }
+    await antrianRef.add({
+      Kode_layanan: 'test',
+      Nomer_antrian: 0,
+      Status: 1,
+      Index_antrian : 'test_true'
+
+
+})
+}
+
+
+
+
+}
+
 
 // logic OR bukan and :( salah
 // async getNextAntrian(codeservice:string){
@@ -148,16 +193,3 @@ async panggilAntrian(Nomer_antrian : number){
 
 // }
 // }
-
-
-async getbystatusservice(index_antrian : string){
-  let snapshot;
-  try {
-    snapshot = await antrianRef.where ('index_antrian','==', index_antrian).get();
-  } catch (error) {
-    throw error
-  }
-}
-
-
-}

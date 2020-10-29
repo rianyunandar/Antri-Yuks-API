@@ -14,17 +14,17 @@ const antrianRouter = Router();
 
 antrianRouter.post('/add' , async (req, res, next)=>
 {
+  let antrian;
 const codeservice =req.body.kode_layanan;
-try {
-    await antrianClient.addAntrian(codeservice);
 
+try {
+  await antrianClient.addAntrian(codeservice);
+  antrian = await antrianClient.PrintLastTicket();
 } catch (error) {
     throw error;
   }
-
-  res.json({
-    message: 'success'
-  });
+  
+  res.status(201).json(antrian);
 });
 
 
@@ -36,7 +36,7 @@ antrianRouter.get('/all', async (req, res, next) => {
       return next(error);
     }
   
-    res.json(antrian);
+    res.status(200).json(antrian);
   });
 
 
@@ -48,19 +48,21 @@ antrianRouter.get('/all', async (req, res, next) => {
       return next(error);
     }
   
-    res.json(antrian);
+    res.status(200).json(antrian);
   });
 
-  // antrianRouter.put('/antriansele/:id', async (req, res, next) => {
-  //   const id =  req.params.id;
-  //   const update = req.body
-  //   let antrian;
-  //   try {
-  //       antrian = await antrianClient.updateStatusAntrian(id, update)
-  //   } catch (error) {
-  //     return next(error);
-  //   }
-  // });
+  antrianRouter.put('/closed/:id', async (req, res, next) => {
+    const id =  req.params.id;
+    const layanan =  req.body.kode_layanan;
+    //console.log('test : ' + id,layanan)
+    let antrian;
+    try {
+        antrian = await antrianClient.updateStatusAntrian(id,layanan)
+    } catch (error) {
+      return next(error);
+    }
+    res.status(200).json(antrian);
+  });
 
   antrianRouter.delete('/reset', async (req, res, next) => {
     try {
@@ -68,45 +70,57 @@ antrianRouter.get('/all', async (req, res, next) => {
     } catch (error) {
       return next(error);
     }
-    res.json({
+
+    
+    res.status(200).json({
       message: 'queees cleared',
     });
   })
 
 
-  antrianRouter.get('/:id', async (req, res, next) => {
-  const id =  req.params.id;
+  antrianRouter.get('/:service', async (req, res, next) => {
+  const param =  req.params.service;
   let antrian;
     try {
-        antrian = await antrianClient.getAntrianByLayanan(id);
+        antrian = await antrianClient.getAntrianByLayanan(param);
     } catch(error) {
       return next(error);
     }
      
   
-    res.json(antrian);
+    res.status(200).json(antrian);
   });;
 
   antrianRouter.get('/:service/:status', async (req, res, next) => {
-    const id = req.params.service+'_'+req.params.status;
-    console.log(id);
+    const param = req.params.service+'_'+req.params.status;
     let antrian;
       try {
-          antrian = await antrianClient.getbystatusservice(id);
+          antrian = await antrianClient.getbystatusservice(param);
       } catch(error) {
         return next(error);
       }
        
-      res.json(antrian);
+      res.status(200).json(antrian);
     });;
 
 
 
 
-  
-  //tambah filter by status
-//   
-// console.log('arr1', arr1);
+    //masih bug 
+    // antrianRouter.get('/allbystatus', async (req, res, next) => {
+    //   const param = req.body.Status;
+    //   console.log(param);
+    //   let antrian;
+    //     try {
+    //         antrian = await antrianClient.getAntrianByStatus(param);
+    //     } catch(error) {
+    //       return next(error);
+    //     }
+         
+    //     res.status(200).json(antrian);
+    //   });;
+
+
 
 
 
