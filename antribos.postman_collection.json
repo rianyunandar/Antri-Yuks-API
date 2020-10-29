@@ -1,0 +1,330 @@
+{
+	"info": {
+		"_postman_id": "bcb1a11b-6a16-4f3c-95ed-342fd44a3c3a",
+		"name": "antribos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Layanan",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"nama_layanan\": \"Teller Umum\",\r\n        \"operator\": \"Agus\",\r\n        \"jenis_layanan\": \"Offline\",\r\n        \"kode_layanan\": \"TUM\"\r\n    }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/services/add",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"services",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update layanan",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"operator\": \"panji\",\r\n    \"jenis_layanan\": \"hybrid\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/services/update/:id",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"services",
+						"update",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "KAKjReez9h2ouSF1dFOL"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete layanan",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/services/delete/:id",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"services",
+						"delete",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "KAKjReez9h2ouSF1dFOL"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get layanan all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/services/all",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"services",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get layanan by kodelayanan",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"nama_layanan\": \"Teller Umum\",\r\n        \"operator\": \"Agus\",\r\n        \"jenis_layanan\": \"Offline\",\r\n        \"kode_layanan\": \"TUM\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/services/:servicecode",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"services",
+						":servicecode"
+					],
+					"variable": [
+						{
+							"key": "servicecode",
+							"value": "CS"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get tiket number",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/quees/nextnumber",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"quees",
+						"nextnumber"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset tiket number",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/quees/reset",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"quees",
+						"reset"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all Ticket Number",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/quees/all",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"quees",
+						"all"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add antrian",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n          \"kode_layanan\": \"TUM\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/quees/add",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"quees",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update status antrian",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n          \"kode_layanan\": \"TUM\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:3000/quees/closed/:id",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"quees",
+						"closed",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "XkcSWP7GhyLYi9edc1U0"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Next Antrian By Code Services & status",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/quees/:services/:status",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"quees",
+						":services",
+						":status"
+					],
+					"variable": [
+						{
+							"key": "services",
+							"value": "TUM"
+						},
+						{
+							"key": "status",
+							"value": "true"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Next Antrian By Code Services",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/quees/:services",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"quees",
+						":services"
+					],
+					"variable": [
+						{
+							"key": "services",
+							"value": "TUM"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
