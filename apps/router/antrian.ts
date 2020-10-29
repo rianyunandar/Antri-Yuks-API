@@ -14,17 +14,11 @@ const antrianRouter = Router();
 
 antrianRouter.post('/add' , async (req, res, next)=>
 {
- const antrian = req.body//({
-//   kode_layanan: req.body.kodelayanan,
-//   Nomer_antrian: req.body.nomerantrian,
-//   Status: req.body.status,
-//   indexantrian : ('req.body.status  +'_'+ req.body.nomerantrian')
- 
-//});;
+const codeservice =req.body.kode_layanan;
 try {
-    await antrianClient.addAntrian(antrian);
+    await antrianClient.addAntrian(codeservice);
 
-} catch (error) {``
+} catch (error) {
     throw error;
   }
 
@@ -38,6 +32,18 @@ antrianRouter.get('/all', async (req, res, next) => {
     let antrian;
     try {
         antrian = await antrianClient.getAntrianALL();
+    } catch(error) {
+      return next(error);
+    }
+  
+    res.json(antrian);
+  });
+
+
+  antrianRouter.get('/nextnumber', async (req, res, next) => {
+    let antrian;
+    try {
+        antrian = await antrianClient.getticketnumber();
     } catch(error) {
       return next(error);
     }

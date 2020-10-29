@@ -20,21 +20,41 @@ export class AntrianClient {
 constructor() {
   this.db= dbfire;
   this.antrianRef = antrianRef;
- // this.layananRef = layananRef;
-}
+ }
   
-async addAntrian(antrian: Antrian){
+async addAntrian(codeservice: string){
+  console.log(codeservice )
     try {
+      const ticketnumber = await this.getticketnumber();
+      let ticket = ticketnumber[0];
+      
+       
+       console.log(ticket)
         await antrianRef.add({
-          kode_layanan: antrian.Kode_layanan,
-          Nomer_antrian: antrian.Nomer_antrian,
-          Status: antrian.Status,
-          index_antrian : antrian.Kode_layanan + '_'+antrian.Status});
-    
+          kode_layanan: codeservice,
+          Nomer_antrian:ticket,
+          Status: false,
+          index_antrian : codeservice + '_'+false});
+    console.log('test code : ',codeservice )
         } catch (error) {
         throw error
       }
 }
+
+async getticketnumber()
+{
+  let ticketnumber
+   try {
+    ticketnumber = await this.antrianRef.orderBy('Nomer_antrian','desc').limit(1).get();
+    //if ticketnumber.is
+    } catch (error) {
+      throw error
+    } 
+    console.log(ticketnumber);
+    return ticketnumber.docs.map(doc => doc.data().Nomer_antrian+1); //max number +1
+}
+
+
 
 async getAntrianALL(){
     let snapshot;
@@ -73,10 +93,18 @@ async ResetAntrian(){
           res.forEach(element => {
             element.ref.delete();
           });
-      
-      })} catch (error) {
+      }  
+      )} catch (error) {
         throw error
       }
+      await antrianRef.add({
+        kode_layanan: 'test',
+        Nomer_antrian: 0,
+        Status: 1,
+        index_antrian : 'test_true'
+
+
+})
 }
 
 async updateStatusAntrian(id: string, update: Object) {
@@ -98,6 +126,7 @@ async panggilAntrian(Nomer_antrian : number){
     } catch (error) {
       throw error
     }
+    return snapshot.docs.map(doc => {return {...doc.data(), id: doc.id} }); // data+ id
 }
 
 // logic OR bukan and :( salah
