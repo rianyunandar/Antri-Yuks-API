@@ -36,11 +36,11 @@ layananRouter.get('/all', async (req, res, next) => {
     res.json(layanan);
   });
 
-  layananRouter.get('/:id', async (req, res, next) => {
-   const id =  req.params.id;
+  layananRouter.get('/:servicecode', async (req, res, next) => {
+   const param =  req.params.servicecode;
    let layanan;
     try {
-        layanan = await layananClient.getlayananByKode(id);
+        layanan = await layananClient.getlayananByKode(param);
     } catch(error) {
       return next(error);
     }

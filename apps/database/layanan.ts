@@ -52,7 +52,6 @@ async getlayananByKode(codeservice: string){
   }
   return snapshot.docs.map(doc => doc.data());
 }
-//
 
 async deleteLayanan(id: string){
   try {
